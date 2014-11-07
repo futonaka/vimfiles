@@ -11,6 +11,19 @@ filetype plugin on
 
 autocmd FileType ruby :map <C-n> <ESC>:!ruby -cW %<CR>
 
+" Save last opened line.
+if has("autocmd")
+  augroup redhat
+    " In text files, always limit the width of text to 78 characters
+    autocmd BufRead *.txt set tw=78
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal! g'\"" |
+    \ endif
+  augroup END
+endif
+
 "neocomplcache
 let g:neocomplcache_enable_at_startup = 1 " 起動時に有効化
 
@@ -19,6 +32,7 @@ imap {} {}<Left>
 imap [] []<Left>
 imap () ()<Left>
 imap "" ""<Left>
+imap '' ''<Left>
 imap <> <><Left>
 
 function! InsertTabWrapper()
@@ -44,22 +58,6 @@ augroup UjihisaRSpec
   autocmd!
   autocmd BufRead,BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
 augroup END
-
-
-" twitvim
-nnoremap <Space>po   :<C-u>PosttoTwitter<Enter>
-nnoremap <Space>fr   :<C-u>FriendsTwitter<Enter>
-nnoremap <Space>re   :<C-u>RepliesTwitter<Enter>
-nnoremap <Space>tt   :<C-u>ListTwitter tottoruby<Enter>
-nnoremap <Space>nn   :<C-u>NextTwitter<Enter>
-nnoremap <Leader>u   yw:UserTwitter <C-R>+<CR>
-"let twitvim_login = "user:pass"
-""base64 encode
-"$ cat -n 'user:pass'|openssl base64
-"let twitvim_login_b64 = "base64string"
-""let twitvim_browser_cmd = "firefox.exe"
-"let twitvim_browser_cmd = "open -a /Applications/Firefox.app"
-let twitvim_count = 50
 
 "vim ref
 nnoremap <silent> <Space>a :Ref alc <C-r><C-w><C-m><C-w>_
